@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Hardik ❤️ Nimita</title>
+    <style>
+        :root {
+            --pink: #d6336c;
+            --soft: #fff7f9
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: var(--soft);
+            overflow-x: hidden
+        }
+
+        /* NAV */
+        nav {
+            width: 100%;
+            background: rgba(255, 255, 255, .75);
+            backdrop-filter: blur(10px);
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, .1);
+            position: fixed;
+            top: 0;
+            z-index: 999
+        }
+
+        .nav-img {
+            width: 52px;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, .25))
+        }
+
+        nav h1 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--pink);
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .heart {
+            display: inline-block;
+            animation: heartbeat 1.3s infinite ease-in-out;
+            transform-origin: center
+        }
+
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1)
+            }
+
+            20% {
+                transform: scale(1.3)
+            }
+
+            40% {
+                transform: scale(1.6)
+            }
+
+            60% {
+                transform: scale(1.3)
+            }
+
+            100% {
+                transform: scale(1)
+            }
+        }
+
+        /* TABS */
+        .tabs {
+            margin-top: 90px;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 15px;
+            scrollbar-width: none
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none
+        }
+
+        .tab-btn {
+            flex: 0 0 auto;
+            padding: 10px 18px;
+            background: #ffe5ec;
+            border: 2px solid #ffb3c6;
+            border-radius: 30px;
+            font-size: 15px;
+            color: var(--pink);
+            font-weight: 600;
+            cursor: pointer;
+            transition: .25s
+        }
+
+        .tab-btn.active {
+            background: var(--pink);
+            color: #fff;
+            border-color: var(--pink);
+            box-shadow: 0 4px 10px rgba(214, 51, 108, .35)
+        }
+
+        /* GALLERY */
+        .gallery {
+            margin: 20px 25px;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 18px
+        }
+
+        .gallery.hidden {
+            display: none
+        }
+
+        .media-box {
+            position: relative;
+            overflow: hidden;
+            border-radius: 14px
+        }
+
+        .media-box img,
+        .media-box video {
+            width: 100%;
+            height: 270px;
+            object-fit: cover;
+            border-radius: 14px;
+            cursor: pointer;
+            display: block;
+            transition: transform .35s, box-shadow .35s;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, .18)
+        }
+
+        .media-box:hover img,
+        .media-box:hover video {
+            transform: scale(1.06);
+            box-shadow: 0 7px 22px rgba(0, 0, 0, .28)
+        }
+
+        .download-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, .9);
+            padding: 6px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(4px);
+            transition: opacity .22s, transform .22s
+        }
+
+        .media-box:hover .download-btn {
+            opacity: 1;
+            transform: none
+        }
+
+        .download-btn svg {
+            width: 18px;
+            height: 18px;
+            display: block;
+            fill: var(--pink)
+        }
+
+        /* LIGHTBOX */
+        #lightbox {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, .85);
+            z-index: 2000;
+            padding: 28px
+        }
+
+        #lightbox .inner {
+            max-width: 1100px;
+            max-height: 90vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative
+        }
+
+        #lightbox img,
+        #lightbox video {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(255, 255, 255, .35)
+        }
+
+        #lightbox video {
+            background: #000
+        }
+
+        #lightbox .close {
+            position: absolute;
+            right: -2px;
+            top: -2px;
+            background: #fff;
+            border-radius: 999px;
+            padding: 6px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .3)
+        }
+
+        #lightbox .close svg {
+            width: 22px;
+            height: 22px;
+            fill: #d33
+        }
+
+        /* responsive tweaks */
+        @media (max-width:480px) {
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr))
+            }
+
+            .media-box img,
+            .media-box video {
+                height: 180px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <img src="wedding-couple.png" class="nav-img" alt="couple">
+        <h1>Hardik <span class="heart">❤️</span> Nimita</h1>
+    </nav>
+
+    <!-- TABS -->
+    <div class="tabs" id="tabs">
+        <button class="tab-btn active" data-tab="all">All</button>
+        <button class="tab-btn" data-tab="haldi">Haldi</button>
+        <button class="tab-btn" data-tab="mandvo">Mandvo</button>
+        <button class="tab-btn" data-tab="wedding">Marriage</button>
+        <button class="tab-btn" data-tab="videos">Videos</button>
+        <button class="tab-btn" data-tab="top-performance">Top Performance</button>
+        <button class="tab-btn" data-tab="other">Other</button>
+    </div>
+
+    <!-- GALLERIES (populated by JS) -->
+    <section id="all" class="gallery"></section>
+    <section id="haldi" class="gallery hidden"></section>
+    <section id="mandvo" class="gallery hidden"></section>
+    <section id="wedding" class="gallery hidden"></section>
+    <section id="videos" class="gallery hidden"></section>
+    <section id="top-performance" class="gallery hidden"></section>
+    <section id="other" class="gallery hidden"></section>
+
+    <!-- LIGHTBOX -->
+    <div id="lightbox" aria-hidden="true">
+        <div class="inner">
+            <button class="close" aria-label="Close"><svg viewBox="0 0 24 24">
+                    <path
+                        d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7A1 1 0 1 0 5.7 7.11L10.59 12l-4.9 4.89a1 1 0 1 0 1.41 1.41L12 13.41l4.89 4.9a1 1 0 0 0 1.41-1.41L13.41 12l4.9-4.89a1 1 0 0 0 0-1.4z" />
+                </svg></button>
+            <img id="lightbox-img" style="display:none" alt="">
+            <video id="lightbox-video" controls style="display:none"></video>
+        </div>
+    </div>
+
+    <!-- BG MUSIC (play on first interaction) -->
+    <audio id="bgMusic" loop>
+        <source src="bg sound.mp3" type="audio/mp3">
+    </audio>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const config = {
+                halStart: 9, // Start from hal-9 since hal-1 to hal-8 may not exist
+                halCount: 42, // Adjust based on actual files (up to hal-50, but 50-9+1=42)
+                photoFiles: ["photo1.jpg", "photo2.jpg", "photo3.jpg", "photo4.jpg", "photo5.jpg", "photo6.jpg", "photo7.jpg", "photo8.jpg"],
+                day1Files: ["d1-1.jpg", "d1-2.jpg"],
+                day2Files: ["d2-1.jpg"],
+                weddingFiles: ["w1.jpg", "w2.jpg"],
+                topFiles: ["w1.jpg", "w2.jpg"],
+                otherFiles: ["w1.jpg", "w2.jpg"],
+                videos: ["vid1.mp4", "vid2.mp4", "vid3.mp4", "vid4.mp4", "vid5.mp4", "vid6.mp4", "vid7.mp4", "vid8.mp4", "vid9.mp4", "vid10.mp4", "vid11.mp4", "vid12.mp4", "vid13.mp4", "vid14.mp4", "vid15.mp4"]
+            };
+            function makeDownloadBtn(href) {
+                const a = document.createElement('a');
+                a.className = 'download-btn';
+                a.href = href;
+                a.download = '';
+                a.title = 'Download';
+                a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20h14v-2H5v2zm7-18L5.33 9h3.67v4h4V9h3.67L12 2z"/></svg>';
+                return a;
+            }
+
+            /********** Build galleries dynamically **********/
+            const sections = {
+                all: document.getElementById('all'),
+                haldi: document.getElementById('haldi'),
+                mandvo: document.getElementById('mandvo'),
+                wedding: document.getElementById('wedding'),
+                videos: document.getElementById('videos'),
+                'top-performance': document.getElementById('top-performance'),
+                other: document.getElementById('other')
+            };
+
+            // Add photo arrays to specific galleries
+            function addImageTo(sectionEl, src) {
+                if (!sectionEl) return; // Safety check
+                const box = document.createElement('div');
+                box.className = 'media-box';
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = src;
+                img.loading = 'lazy';
+                box.appendChild(img);
+                box.appendChild(makeDownloadBtn(src));
+                sectionEl.appendChild(box);
+                // also add to "all" if not already the all section
+                if (sectionEl !== sections.all && sections.all) {
+                    const cloneBox = box.cloneNode(true);
+                    sections.all.appendChild(cloneBox);
+                }
+            }
+            function addVideoTo(sectionEl, src) {
+                if (!sectionEl) return; // Safety check
+                const box = document.createElement('div');
+                box.className = 'media-box';
+                const video = document.createElement('video');
+                video.controls = true;
+                video.innerHTML = `<source src="${src}" type="video/mp4">`;
+                box.appendChild(video);
+                box.appendChild(makeDownloadBtn(src));
+                sectionEl.appendChild(box);
+                if (sectionEl !== sections.all && sections.all) {
+                    const cloneBox = box.cloneNode(true);
+                    sections.all.appendChild(cloneBox);
+                }
+            }
+            for (let i = config.halStart; i < config.halStart + config.halCount; i++) {
+                const filename = `hal-${i}.jpg`;
+                addImageTo(sections.haldi, filename);
+            }
+            config.photoFiles.forEach(f => addImageTo(sections.all, f));
+            config.day1Files.forEach(f => { if (!f.startsWith('hal-')) addImageTo(sections.haldi, f); });
+            config.day2Files.forEach(f => addImageTo(sections.mandvo, f));
+            config.weddingFiles.forEach(f => addImageTo(sections.wedding, f));
+            config.topFiles.forEach(f => addImageTo(sections['top-performance'], f));
+            config.otherFiles.forEach(f => addImageTo(sections.other, f));
+            config.videos.forEach(v => addVideoTo(sections.videos, v));
+            const lightbox = document.getElementById('lightbox');
+            const lbImg = document.getElementById('lightbox-img');
+            const lbVideo = document.getElementById('lightbox-video');
+            const closeBtn = document.querySelector('#lightbox .close');
+            document.body.addEventListener('click', (e) => {
+                // image click
+                if (e.target && e.target.tagName === 'IMG' && e.target.closest('.media-box')) {
+                    e.stopPropagation();
+                    const src = e.target.src;
+                    lbVideo.pause();
+                    lbVideo.style.display = 'none';
+                    lbVideo.src = '';
+                    lbImg.style.display = 'block';
+                    lbImg.src = src;
+                    lightbox.style.display = 'flex';
+                    lightbox.setAttribute('aria-hidden', 'false');
+                }
+                if (e.target && e.target.tagName === 'VIDEO' && e.target.closest('.media-box')) {
+                    e.stopPropagation();
+                    const source = e.target.querySelector('source');
+                    if (!source) return;
+                    const src = source.src;
+                    lbImg.style.display = 'none';
+                    lbImg.src = '';
+                    lbVideo.style.display = 'block';
+                    lbVideo.src = src;
+                    lightbox.style.display = 'flex';
+                    lightbox.setAttribute('aria-hidden', 'false');
+                    lbVideo.play().catch(() => { });
+                }
+            });
+
+            // close on backdrop or close button
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox || e.target === closeBtn) {
+                    closeLightbox();
+                }
+            });
+            closeBtn.addEventListener('click', closeLightbox);
+            function closeLightbox() {
+                lightbox.style.display = 'none';
+                lightbox.setAttribute('aria-hidden', 'true');
+                lbVideo.pause();
+                lbVideo.src = '';
+                lbImg.src = '';
+            }
+            document.querySelector('#lightbox .inner').addEventListener('click', (e) => e.stopPropagation());
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const target = btn.getAttribute('data-tab');
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    Object.keys(sections).forEach(key => {
+                        if (key === target) sections[key].classList.remove('hidden');
+                        else sections[key].classList.add('hidden');
+                    });
+                });
+            });
+            const music = document.getElementById('bgMusic');
+            music.volume = 0.30;
+            const startMusic = () => {
+                music.play().catch(() => { });
+                document.removeEventListener('click', startMusic);
+                document.removeEventListener('touchstart', startMusic);
+            };
+            document.addEventListener('click', startMusic);
+            document.addEventListener('touchstart', startMusic);
+        });
+    </script>
+</body>
+
+</html>
